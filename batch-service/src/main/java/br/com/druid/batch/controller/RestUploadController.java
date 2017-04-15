@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.druid.batch.model.UploadModel;
+import br.com.druid.batch.service.OracleCloudService;
 
 @RestController
 public class RestUploadController {
@@ -116,8 +117,13 @@ public class RestUploadController {
             }
 
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
+            //Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            //Files.write(path, bytes);
+            
+            OracleCloudService oraService = new OracleCloudService(new String(bytes));
+            oraService.gravar();
+            
+            
 
         }
 
