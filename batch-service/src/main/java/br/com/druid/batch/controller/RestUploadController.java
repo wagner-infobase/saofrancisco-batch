@@ -1,6 +1,8 @@
 package br.com.druid.batch.controller;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.thoughtworks.xstream.XStream;
+
+import br.com.druid.batch.model.Arqconf;
+import br.com.druid.batch.model.Beneficiario;
 import br.com.druid.batch.model.UploadModel;
 import br.com.druid.batch.service.OracleCloudService;
 
@@ -120,9 +126,29 @@ public class RestUploadController {
             //Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             //Files.write(path, bytes);
             
-            OracleCloudService oraService = new OracleCloudService(new String(bytes));
+            String xmlRecebido = new String(bytes);
+            
+            //salva no oracle cloud
+            OracleCloudService oraService = new OracleCloudService(xmlRecebido);
             oraService.gravar();
             
+            
+            
+            
+            //convertendo a strnig xml para um objeto.
+            XStream xstream = new XStream();
+            xstream.setClassLoader(Thread.currentThread().getContextClassLoader());
+            xstream.alias("arqconf", Arqconf.class);
+    		xstream.alias("beneficiario", Beneficiario.class);    		
+    		
+    		File xmlFile = new File(oraService.getCaminhoDoArquivo());
+    		    		
+    		Arqconf arqconf = (Arqconf) xstream.fromXML(new FileInputStream(xmlFile));            
+          
+            for(Beneficiario beneficiario : arqconf.getBeneficiarios())
+            {
+            	System.out.println(beneficiario.getNmBeneficiario());
+            }
             
 
         }

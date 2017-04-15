@@ -16,6 +16,7 @@ public class OracleCloudService {
 
 	private final String xmlArqconfGerado;
 	private final String nomeArqConfSemExtensao="arqconfimportado";
+	private String caminhoDoArquivo;
 
 	public OracleCloudService(String xmlArqconfGerado) {
 		this.xmlArqconfGerado=xmlArqconfGerado;
@@ -68,6 +69,7 @@ public class OracleCloudService {
 			// create a temp file
 			File temp = File.createTempFile(nomeArqConfSemExtensao, ".xml");
 
+			this.setCaminhoDoArquivo(temp.getAbsolutePath());
 			// delete temporary file when the program is exited
 			temp.deleteOnExit();
 
@@ -82,5 +84,15 @@ public class OracleCloudService {
 			throw e;
 		}
 	}
+
+	public String getCaminhoDoArquivo() {
+		return caminhoDoArquivo;
+	}
+
+	public void setCaminhoDoArquivo(String caminhoDoArquivo) {
+		this.caminhoDoArquivo = caminhoDoArquivo;
+	}
+	
+	
 
 }
