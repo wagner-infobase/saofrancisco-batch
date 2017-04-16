@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,19 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.thoughtworks.xstream.XStream;
 
 import br.com.druid.batch.model.Arqconf;
 import br.com.druid.batch.model.Beneficiario;
+import br.com.druid.batch.model.FileConfHistory;
 import br.com.druid.batch.model.UploadModel;
 import br.com.druid.batch.service.OracleCloudService;
+
 
 @RestController
 public class RestUploadController {
@@ -145,12 +150,24 @@ public class RestUploadController {
     		    		
     		Arqconf arqconf = (Arqconf) xstream.fromXML(new FileInputStream(xmlFile));            
           
+    		RestTemplate restTemplate = new RestTemplate();
+    		
             for(Beneficiario beneficiario : arqconf.getBeneficiarios())
             {
             	System.out.println(beneficiario.getNmBeneficiario());
+            	
+            	
+            	FileConfHistory arqConf = new FileConfHistory();
+    			arqConf.setBenefeciaryName(beneficiario.getNmBeneficiario());
+    			
+    			FileConfHistory fileConfHistoryList = restTemplate.postForObject(
+    					"http://127.0.0.1:8094/fileConfHistoryRepository", arqConf, FileConfHistory.class);
             }
             
 
+            
+           
+            
         }
 
     }
