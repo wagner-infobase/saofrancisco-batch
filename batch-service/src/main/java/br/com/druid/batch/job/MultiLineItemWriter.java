@@ -48,7 +48,7 @@ public class MultiLineItemWriter implements ItemWriter<Arqconf>, ItemStream {
 		
 		jdbcTemplate.batchUpdate(SQL, batch);
 		
-		databaseItemWriter.setJdbcTemplate(null);;
+		databaseItemWriter.setJdbcTemplate(null);
 		databaseItemWriter
 				.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Beneficiario>());
 		//databaseItemWriter.setSql(SQL);
