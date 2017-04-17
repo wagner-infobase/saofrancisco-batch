@@ -1,5 +1,11 @@
 package br.com.druid.batch.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="beneficiario")
 public class Beneficiario {
 
 	private String codArqconfHistorico;
@@ -35,6 +41,10 @@ public class Beneficiario {
 	private String cei;
 	private String dtCancelamento;
 	private String codMotivoCancelamento;
+	
+	
+	public Beneficiario() {}
+	
 	public Beneficiario(String codArqconfHistorico, String codLote, String nmBeneficiario, String dtNascimento,
 			String sexo, String cpf, String pisPasep, String nmMae, String nroCns, String codIdentBenefcOper,
 			String codTitular, String cco, String dnv, String endResProf, String logradouro, String nroLogradouro,
